@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/static/styles/column-layout.css">
     <link rel="stylesheet" href="/static/styles/form.css">
     <link rel="stylesheet" href="/static/styles/btn-group.css">
+    <link rel="stylesheet" href="/static/styles/custom-select.css">
+    <link rel="stylesheet" href="/static/styles/responsive-nav-bar.css">
     <title>PLACEHOLDER</title>
     <style>
         body{
@@ -20,42 +22,111 @@
             background-color: #AAA;
             height: 150px;
         }
+
+        .image-inline{
+            width: 20%;
+            margin-left: 40%;
+            margin-right: 40%;
+        }
+
+        .side-img{
+            width: 100%;
+            max-width: 100%;
+            background-position: center;
+            max-height: 100%;
+        }
     </style>
 </head>
 <body>
+    
+    <div class="topnav" id="myTopnav">
+        <a href="/">Hlavní stránka</a>
+        <div class="dropdown">
+          <button class="dropbtn">Archiv
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/archiv">Archiv</a>
+            <a href="/archiv/vitani_novacku">Vítání nováčků</a>
+            <a href="/archiv/gymplace">GYMPlace</a>
+          </div>
+        </div> 
+        <div class="dropdown">
+          <button class="dropbtn">IvanMan
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/ivanman_welcome">IvanMan</a>
+            <a href="/ivanman/leaderboard">Tabulka vítězů</a>
+          </div>
+        </div>
+        <a href="/faq">FAQ</a>
+        <a href="/ucitel_zemepisu" class="active">Učitel zeměpisu</a>
+        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveNavbar()">&#9776;</a>
+    </div>
+    
     <div class="banner">
         <h1 style="line-height: 150px; padding: 0; margin: 0; text-align: center;">BANNER PLACEHOLDER</h1>
     </div>
-    <div class="row">
+
+    <div class="row" style="height: 100% !important;">
         <div class="column left">
+            
         </div>
         <div class="column middle">
             <h2>Za Babiše bylo líp!</h2>
             <h3>Blablabla. Nějakej slogan.</h3>
             <p>Blablabla, nějakej text. vymyslíme.</p>
 
-            <input type="text" name="query" id="query" placeholder="Na co se chceš zetptat?" maxlength="100">
+            <div class="custom-select" style="width:300px;">
+                <select id="select-value">
+                    <option value="0">Vyber otázku</option>
+                    <option value="1">Proč o sobě tvrdíte, že jste nezávislý kandidát, když kandidujete za hnutí ANO?</option>
+                    <option value="2">Proč lžete o Vašem působení v StB?</option>
+                    <option value="3">Vaši kandidaturu podpořila strana KSČM. Znamená to tedy, že jste komunistický kandidát?</option>
+                    <option value="4">Říkal jste, že v případě ruského útoku na Polsko byste neposkytl vojenskou pomoc. Jste si vědom, že se jedná o porušení článku 5 NATO?</option>
+                    <option value="5">Vlastní</option>
+                </select>
+            </div>
 
-            <p id="result-text" style="display: none;"></p>
-            <img src="/static/images/qr_loading_gif.gif" id="loading-image" style="display: none;" class="image-inline">
+            <input type="text" name="babis-query" id="babis-query" placeholder="Na co se chceš zetptat?" maxlength="150" style="display: none;">
+
+            <p id="result-text"></p>
+            <img src="/static/images/loading_gif.gif" id="loading-image" style="display: none;" class="image-inline">
             <div class="btn-group"><button onclick="generate()">Odeslat</button></div>
 
             <p style="display: none;" id="info-msg"><i>Toto není výrok pana Babiše. Text byl vygenerován s pomocí umělé inteligence od <a href="https://openai.com/">OpenAI</a>.</i></p>
         </div>
         <div class="column right">
-          
+            
         </div>
     </div>
 
     <script>
+        const OTAZKY = [
+            "",
+            "Proč o sobě tvrdíte, že jste nezávislý kandidát, když kandidujete za hnutí ANO?",
+            "Proč lžete o Vašem působení v StB?",
+            "Vaši kandidaturu podpořila strana KSČM. Znamená to tedy, že jste komunistický kandidát?",
+            "Říkal jste, že v případě ruského útoku na Polsko byste neposkytl vojenskou pomoc. Jste si vědom, že se jedná o porušení článku 5 NATO?",
+            "custom"
+        ]
+
         const RESULT_TEXT = document.getElementById("result-text")
         const LOADING_IMAGE = document.getElementById("loading-image")
         const INFO_MESSAGE = document.querySelector("#info-msg")
 
         function generate(){
-            RESULT_TEXT.style.display = "none"
+            RESULT_TEXT.innerHTML = ""
             LOADING_IMAGE.style.display = "block"
             INFO_MESSAGE.style.display = "none"
+
+            let question = OTAZKY[document.querySelector("#select-value").value]
+
+            if(question == "custom"){
+                question = document.querySelector("#babis-query").value
+            }
+
             /**
              * @type {XMLHttpRequest} 
              */
@@ -64,7 +135,6 @@
                 if (this.readyState == 4 && this.status == 200) {
                     // Typical action to be performed when the document is ready:
                     RESULT_TEXT.innerHTML = xhttp.responseText
-                    RESULT_TEXT.style.display = "block"
                     LOADING_IMAGE.style.display = "none"
                     INFO_MESSAGE.style.display = "block"
                 }
@@ -72,9 +142,103 @@
             xhttp.open("POST", "/", true)
             xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
             xhttp.send(JSON.stringify({
-                query: document.querySelector("#query").value
+                query: question
             }))
         }
+    </script>
+
+    <!--
+        PASTED GARBAGE AHEAD
+    -->
+
+    <script>
+        //what the actual fuck...
+        var x, i, j, l, ll, selElmnt, a, b, c;
+/* Look for any elements with the class "custom-select": */
+x = document.getElementsByClassName("custom-select");
+l = x.length;
+for (i = 0; i < l; i++) {
+  selElmnt = x[i].getElementsByTagName("select")[0];
+  ll = selElmnt.length;
+  /* For each element, create a new DIV that will act as the selected item: */
+  a = document.createElement("DIV");
+  a.setAttribute("class", "select-selected");
+  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+  x[i].appendChild(a);
+  /* For each element, create a new DIV that will contain the option list: */
+  b = document.createElement("DIV");
+  b.setAttribute("class", "select-items select-hide");
+  for (j = 1; j < ll; j++) {
+    /* For each option in the original select element,
+    create a new DIV that will act as an option item: */
+    c = document.createElement("DIV");
+    c.innerHTML = selElmnt.options[j].innerHTML;
+    c.addEventListener("click", function(e) {
+        /* When an item is clicked, update the original select box,
+        and the selected item: */
+        
+        var y, i, k, s, h, sl, yl;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        sl = s.length;
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < sl; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            yl = y.length;
+            for (k = 0; k < yl; k++) {
+              y[k].removeAttribute("class");
+            }
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
+        }
+        h.click();
+    });
+    b.appendChild(c);
+  }
+  x[i].appendChild(b);
+  a.addEventListener("click", function(e) {
+    /* When the select box is clicked, close any other select boxes,
+    and open/close the current select box: */
+    if(OTAZKY[document.querySelector("#select-value").value] == "custom"){
+            document.querySelector("#babis-query").style.display = "block"
+        }else{
+            document.querySelector("#babis-query").style.display = "none"
+        }
+    e.stopPropagation();
+    closeAllSelect(this);
+    this.nextSibling.classList.toggle("select-hide");
+    this.classList.toggle("select-arrow-active");
+  });
+}
+
+function closeAllSelect(elmnt) {
+  /* A function that will close all select boxes in the document,
+  except the current select box: */
+  var x, y, i, xl, yl, arrNo = [];
+  x = document.getElementsByClassName("select-items");
+  y = document.getElementsByClassName("select-selected");
+  xl = x.length;
+  yl = y.length;
+  for (i = 0; i < yl; i++) {
+    if (elmnt == y[i]) {
+      arrNo.push(i)
+    } else {
+      y[i].classList.remove("select-arrow-active");
+    }
+  }
+  for (i = 0; i < xl; i++) {
+    if (arrNo.indexOf(i)) {
+      x[i].classList.add("select-hide");
+    }
+  }
+}
+
+/* If the user clicks anywhere outside the select box,
+then close all select boxes: */
+document.addEventListener("click", closeAllSelect); 
     </script>
 </body>
 </html>
