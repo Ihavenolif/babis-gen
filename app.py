@@ -1,6 +1,7 @@
 import openai
 import os
 import random
+from datetime import datetime
 from flask import Flask, render_template, request
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -10,9 +11,16 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if(request.method == "GET"):
+        f = open("navstevnost_log.txt", "a")
+        f.write("/" + "," + str(datetime.timestamp(datetime.now())) + "\n")
+        f.close()
         return render_template("index.html", number=random.randint(1,5))
     
     query = request.json["query"]
+
+    f = open("dotazy.txt", "a")
+    f.write(query + ";" + str(datetime.timestamp(datetime.now())) + "\n")
+    f.close()
 
     if not query.endswith("?"):
         query = query + "?"
@@ -39,6 +47,9 @@ def index():
 
 @app.route("/faq")
 def faq():
+    f = open("navstevnost_log.txt", "a")
+    f.write("/faq" + "," + str(datetime.timestamp(datetime.now())) + "\n")
+    f.close()
     return render_template("faq.html")
 
 if __name__ == "__main__":
