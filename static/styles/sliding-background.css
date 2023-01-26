@@ -1,0 +1,34 @@
+.sliding-wrapper {
+    overflow: hidden;
+  }
+  
+  .sliding-background {
+    background: url("/static/images/memes/slideshow.png") repeat-x;
+    height: 300px;
+    width: 3512px;
+    animation: slide 30s linear infinite;
+  }
+  
+  @keyframes slide{
+    0%{
+      transform: translate3d(0, 0, 0);
+    }
+    45%{
+      transform: translate3d(calc(-3512px + 100vw), 0, 0);
+    }
+    50%{
+        transform: translate3d(calc(-3512px + 100vw), 0, 0);
+    }
+    95%{
+        transform: translate3d(0, 0, 0);
+    }
+    100%{
+        transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .sliding-background{
+        animation: slide 120s linear infinite;
+    }
+  }

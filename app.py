@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if(request.method == "GET"):
-        return render_template("index.html")
+        return render_template("index.html", number=random.randint(1,5))
     
     query = request.json["query"]
 

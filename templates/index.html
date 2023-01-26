@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/styles/btn-group.css">
     <link rel="stylesheet" href="/static/styles/custom-select.css">
     <link rel="stylesheet" href="/static/styles/responsive-nav-bar.css">
+    <link rel="stylesheet" href="/static/styles/sliding-background.css">
     <title>Betabiš</title>
     <style>
         body{
@@ -36,6 +37,12 @@
             background-position: center;
             max-height: 100%;
         }
+
+        .meme{
+            display: block;
+            margin: auto;
+            max-width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -46,8 +53,12 @@
         <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveNavbar()">&#9776;</a>
     </div>
     
-    <div class="banner">
+    <!--<div class="banner">
         <h1 style="line-height: 150px; padding: 0; margin: 0; text-align: center;">BANNER PLACEHOLDER</h1>
+    </div>-->
+
+    <div class="sliding-wrapper">
+        <div class="sliding-background"></div>
     </div>
 
     <div class="row" style="height: 100% !important;">
@@ -56,8 +67,7 @@
         </div>
         <div class="column middle">
             <h2>Za Babiše bylo líp!</h2>
-            <h3>Blablabla. Nějakej slogan.</h3>
-            <p>Blablabla, nějakej text. vymyslíme.</p>
+            <p>Pavel je provládní kandidát. Nebyl jsem v StB. Pavel chce válku. Já pomáhám lidu. Jsem nezávislý kandidát. Pan Babiš toho říká spoustu a je těžké se v tom vyznat. Naštěstí se ho zde můžete na cokoliv zeptat.</p>
 
             <div class="custom-select" style="width:300px;">
                 <select id="select-value">
@@ -133,6 +143,14 @@
     -->
 
     <script>
+        function responsiveNavbar() {
+          var x = document.getElementById("myTopnav");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
         //what the actual fuck...
         var x, i, j, l, ll, selElmnt, a, b, c;
 /* Look for any elements with the class "custom-select": */
